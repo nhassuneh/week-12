@@ -6,9 +6,37 @@ import matplotlib.pyplot as plt
 
 
 def update_board(current_board):
-    # your code here ...
-    updated_board = current_board
-
+    # create a reference to the current board
+    updated_board = current_board.copy()
+    rows, cols = current_board.shape
+    
+    # iterate through each cell in the board
+    for i in range(rows):
+        for j in range(cols):
+            # count live neighbors
+            total = (current_board[(i-1)%rows, (j-1)%cols] + current_board[(i-1)%rows, j] + 
+                     current_board[(i-1)%rows, (j+1)%cols] + current_board[i, (j-1)%cols] + 
+                     current_board[i, (j+1)%cols] + current_board[(i+1)%rows, (j-1)%cols] + 
+                     current_board[(i+1)%rows, j] + current_board[(i+1)%rows, (j+1)%cols])
+            
+            # apply rules
+            # if cell is alive
+            if current_board[i, j] == 1: 
+                # underpopulation or overpopulation
+                if total < 2 or total > 3:
+                    updated_board[i, j] = 0
+                # survival
+                else: 
+                    updated_board[i, j] = 1
+            # if cell is dead
+            else: 
+                # reproduction
+                if total == 3: 
+                    updated_board[i, j] = 1
+                # no reproduction
+                else:
+                    updated_board[i, j] = 0
+                    
     return updated_board
 
 
