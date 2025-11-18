@@ -13,26 +13,34 @@ def update_board(current_board):
     # iterate through each cell in the board
     for i in range(rows):
         for j in range(cols):
-            # count live neighbors
-            def check_cell(r, c):
-                if 0 <= r < rows and 0 <= c < cols:
-                    return current_board[r, c]
-                return 0
+            total = 0
 
-            for i in range(rows):
-                for j in range(cols):
-                    total = (
-                        check_cell(i-1, j-1) + check_cell(i-1, j) + check_cell(i-1, j+1) +
-                        check_cell(i,   j-1)                + check_cell(i,   j+1) +
-                        check_cell(i+1, j-1) + check_cell(i+1, j) + check_cell(i+1, j+1)
-                    )
-            
-            # apply rules
-            # if cell is alive
-            if current_board[i, j] == 1: 
-                updated_board[i, j] = 1 if total in [2, 3] else 0
-            # if cell is dead
-            else:  
+            # top row neighbors
+            if i > 0:
+                if j > 0:
+                    total += current_board[i-1, j-1]
+                total += current_board[i-1, j]
+                if j < cols - 1:
+                    total += current_board[i-1, j+1]
+
+            # same row neighbors
+            if j > 0:
+                total += current_board[i, j-1]
+            if j < cols - 1:
+                total += current_board[i, j+1]
+
+            # bottom row neighbors
+            if i < rows - 1:
+                if j > 0:
+                    total += current_board[i+1, j-1]
+                total += current_board[i+1, j]
+                if j < cols - 1:
+                    total += current_board[i+1, j+1]
+
+            # Conway's rules
+            if current_board[i, j] == 1:
+                updated_board[i, j] = 1 if total in (2, 3) else 0
+            else:
                 updated_board[i, j] = 1 if total == 3 else 0
                     
     return updated_board
