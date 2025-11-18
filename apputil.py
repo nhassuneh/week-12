@@ -22,20 +22,10 @@ def update_board(current_board):
             # apply rules
             # if cell is alive
             if current_board[i, j] == 1: 
-                # underpopulation or overpopulation
-                if total < 2 or total > 3:
-                    updated_board[i, j] = 0
-                # survival
-                else: 
-                    updated_board[i, j] = 1
+                updated_board[i, j] = 1 if total in [2, 3] else 0
             # if cell is dead
-            else: 
-                # reproduction
-                if total == 3: 
-                    updated_board[i, j] = 1
-                # no reproduction
-                else:
-                    updated_board[i, j] = 0
+            else:  
+                updated_board[i, j] = 1 if total == 3 else 0
                     
     return updated_board
 
