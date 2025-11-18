@@ -14,10 +14,18 @@ def update_board(current_board):
     for i in range(rows):
         for j in range(cols):
             # count live neighbors
-            total = (current_board[(i-1)%rows, (j-1)%cols] + current_board[(i-1)%rows, j] + 
-                     current_board[(i-1)%rows, (j+1)%cols] + current_board[i, (j-1)%cols] + 
-                     current_board[i, (j+1)%cols] + current_board[(i+1)%rows, (j-1)%cols] + 
-                     current_board[(i+1)%rows, j] + current_board[(i+1)%rows, (j+1)%cols])
+            def check_cell(r, c):
+                if 0 <= r < rows and 0 <= c < cols:
+                    return current_board[r, c]
+                return 0
+
+            for i in range(rows):
+                for j in range(cols):
+                    total = (
+                        check_cell(i-1, j-1) + check_cell(i-1, j) + check_cell(i-1, j+1) +
+                        check_cell(i,   j-1)                + check_cell(i,   j+1) +
+                        check_cell(i+1, j-1) + check_cell(i+1, j) + check_cell(i+1, j+1)
+                    )
             
             # apply rules
             # if cell is alive
